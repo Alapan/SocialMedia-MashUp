@@ -1,4 +1,5 @@
-<?php error_reporting( E_ALL ); 
+<?php error_reporting( E_ALL );
+	//Code referred to from "http://25labs.com/tutorial-integrate-facebook-connect-to-your-website-using-php-sdk-v-3-x-x-which-uses-graph-api/" 
 	require 'facebook-php-sdk-master/src/facebook.php';  // Include facebook SDK file
 	$facebook = new Facebook(array(
 	  	'appId'  => '539207986192438',   // Facebook App ID 
@@ -23,14 +24,14 @@
 		));
 	} else {
 	 	$loginUrl = $facebook->getLoginUrl(array(
-			'scope'        => 'email,publish_stream,user_photos', // Permissions to request from the user
+			'scope'        => 'email,publish_stream,publish_actions,user_photos,friends_location', // Permissions to request from the user
 			'redirect_uri' => 'http://group02.naf.cs.hut.fi/index.php'			
 		));
 	}
+
 	if($user){			  		// Information to pull about logged-in user
 		$queries=array(
 			array('method' => 'GET', 'relative_url' => '/'.$user),
-			array('method' => 'GET', 'relative_url' => '/'.$user.'/home?limit=10'),
 			array('method' => 'GET', 'relative_url' => '/'.$user.'/friends?limit=10'),
 		);
 	        try{
@@ -41,14 +42,14 @@
 
         	//Return values are indexed in order of the original array, content is in ['body'] as a JSON string, which is decoded for use as a PHP array
         	$user_info=json_decode($batchResponse[0]{'body'},TRUE);
-        	$feed=json_decode($batchResponse[1]{'body'},TRUE);
-        	$friends_list=json_decode($batchResponse[2]{'body'},TRUE);
+        	$friends_list=json_decode($batchResponse[1]{'body'},TRUE);
 
       	}
       	// Push information to Facebook by allowing user to post status from webpage
       	if(isset($_POST['status'])){
 		try{
 			$statusUpdate = $facebook->api("/$user/feed", 'post', array('message'=> $_POST['status']));
+			echo "Status posted successfully!";
 		}catch(FacebookApiException $e){
 			error_log($e);
 		}

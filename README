@@ -1,0 +1,6 @@
+
+Application URL - http://group02.naf.cs.hut.fi/
+
+Home page - index.php
+
+Library dependencies - To run this application, the Facebook PHP SDK is needed. The code in fbconfig.php (and consequently its dependents) require the facebook.php source file, which is present in the SDK package. This file deines methods such as getLoginUrl(), which we use in our code. We downloaded it from the Developers site and uploaded it (facebook-php-sdk-master) to the server. Other than this, no special installation instructions are needed.
